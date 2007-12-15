@@ -13,6 +13,15 @@ by James Wordelman <quad341@gmail.com>
 import sys
 from ftplib import FTP
 
+# defaults
+# you may want to alter these so you don't have to specify command line args
+_threads = 5 # set to 1 or above; number of simaltanious downloads
+_first = 0 # 0 = not set
+_last = 0 # 0 = not set
+_verbose = 0 # 0 = off, 1 = on
+_outDir = './'
+_format = 'ogg' # ogg or mp3
+
 # parse parameters
 def main(argv):
    try:
@@ -35,9 +44,11 @@ def main(argv):
       elif opt in ("-l","--last"):
          global _last
          _last = arg
-      elif opt in ("-r","--rss"):
-         global _rss
-         _rss = arg
+      # removed rss support because it wouldn't actually help
+      # ftp listing is more accurate for releases anyway
+      #elif opt in ("-r","--rss"):
+      #   global _rss
+      #   _rss = arg
       elif opt in ("-v","--verbose"):
          global _verbose
          _verbose = 1
