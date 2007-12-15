@@ -12,6 +12,10 @@ by James Wordelman <quad341@gmail.com>
 
 import sys
 from ftplib import FTP
+try:
+   import thread as _thread
+except ImportError:
+   import dummy_thread as _thread
 
 # defaults
 # you may want to alter these so you don't have to specify command line args
@@ -19,14 +23,15 @@ _threads = 5 # set to 1 or above; number of simaltanious downloads
 _first = 0 # 0 = not set
 _last = 0 # 0 = not set
 _verbose = 0 # 0 = off, 1 = on
+_quiet = 0 # 0 = show errors, 1 = supress errors
 _outDir = './'
 _format = 'ogg' # ogg or mp3
 
 # parse parameters
 def main(argv):
    try:
-      opts, args = getopt.getopt(argv,"d:t:f:l:o:F:vh",["download=", "threads=",
-      "first=", "last=", "out=","format=","verbose","help"])
+      opts, args = getopt.getopt(argv,"d:t:f:l:o:F:vqh",["download=", "threads=",
+      "first=", "last=", "out=","format=","verbose","quiet","help"])
    except getopt.GetoptError:
       usage()
       sys.exit(2)
@@ -52,6 +57,9 @@ def main(argv):
       elif opt in ("-v","--verbose"):
          global _verbose
          _verbose = 1
+      elif opt in ("-q","--quiet"):
+         global _quiet
+         _quiet = 1
       elif opt in ("-h","--help"):
          fullUsage()
          sys.exit()
