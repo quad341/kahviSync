@@ -26,6 +26,14 @@ _verbose = 0 # 0 = off, 1 = on
 _quiet = 0 # 0 = show errors, 1 = supress errors
 _outDir = './'
 _format = 'ogg' # ogg or mp3
+_temp_dir = '/tmp'
+_cache_dir = True
+
+# internal variables
+_host = 'ftp://ftp.scene.org/'
+_ftpdir = 'pub/music/groups/kahvicollective/'
+
+_files = []
 
 # parse parameters
 def main(argv):
@@ -82,9 +90,39 @@ def usage():
 def fullUsage():
    usage()
    print "releaseNumber \t The number of the release as a number (such as 1 or
-   202"
-   print "threadCount \t The number of simaltanious connections for downloading"
+   202\n"
+   print "threadCount \t The number of simaltanious connections for downloading\n"
+   print "format is a preference; if only one exists, it will be downloaded"
+
+def getFTPInDir():
+   global _host, _ftpdir
+   ftp = FTP(_host)
+   ftp.login()
+   ftp.cwd(_ftpdir)
+   return ftp
+
+def getFileList():
+   global _cache_dir
+   data = []
+   if _cache_dir:
+      global _files
+      data = _files
+   # just return if we have a cache of something and are using it
+   if len(data) > 0:
+      return data
+   ftp = getFTPInDir()
+   ftp.dir(data.append)
+   if _cache_dir:
+      _files = data
+   return data
 
 def getRelease(releaseNumber):
    # we must find the release from the ftp directory and download the file
+   # for threading support, we are spawning a new ftp connection to get the file
+   # first figure out what full file name is for the number
+   #   ex file:kahvi277_acrilic_colors-yves_klein_blue_(mp3).zip
+   for file in getFileList():
+      pass
+   global _tmpdir
+   ftp = getFTPInDir()
 # vim: set sw=3 tw=80 :
