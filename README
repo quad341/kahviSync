@@ -1,0 +1,11 @@
+Introduction
+------------
+kahviSync is supposed to make it easier to keep your collection of kahvi music
+up to date.
+
+Running
+-------
+After configuring the variables in the script or setting them as flags, the
+script should be able to be run as a cron job and automatically keep your
+directory up to date or run manually to get everything missing since the last
+run.
